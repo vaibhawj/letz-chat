@@ -1,5 +1,5 @@
 {
-  "name": "koa-app",
+  "name": "ws-chat",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -30,7 +30,8 @@
   "scripts": {
     "build": "webpack -p --mode=production --config webpack.config.js",
     "build:dev": "webpack --mode=development --config webpack.config.js",
-    "start": "yarn build && node server.js",
+    "postinstall": "yarn build",
+    "start": "node server.js",
     "start:dev": "yarn build:dev && node server.js"
   }
 }
