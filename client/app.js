@@ -9,7 +9,7 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          Chat App
+          <h1>Lets chat</h1>
         <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/room/:roomName" component={Chat} />

@@ -41,7 +41,6 @@ class Chat extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>Lets chat</h1>
         <section>
           <ul style={{listStyle: 'none'}}>
             {
