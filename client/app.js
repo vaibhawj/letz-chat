@@ -1,60 +1,23 @@
-const React = require('react');
-const axios = require('axios');
+import React from 'react';
+import Chat from './chat';
+import Home from './home';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      messages: [],
-      typedMessage: ""
-    }
-
-    this.handleSendClick = this.handleSendClick.bind(this);
-    this.handleTypedMessageChange = this.handleTypedMessageChange.bind(this);
-  }
-
-  componentDidMount(){
-    this.ws = new WebSocket(`ws://${window.location.host}/chat`);
-    this.ws.onmessage = function (evt) {
-      const received_msg = evt.data;
-      const currentMessages = this.state.messages;
-      currentMessages.push(received_msg);
-      this.setState({
-        messages: currentMessages
-      })
-    }.bind(this);
-  }
-
-  handleTypedMessageChange(e) {
-    this.setState({
-      typedMessage: e.target.value
-    })
-  }
-
-  handleSendClick() {
-    this.ws.send(this.state.typedMessage);
-    this.setState({
-      typedMessage: ""
-    })
-  }
 
   render() {
     return (
-      <div className="container">
-        <h1>Lets chat</h1>
-        <section>
-          <ul style={{listStyle: 'none'}}>
-            {
-              this.state.messages.map((m, id) => <li key={id}>{m}</li>)
-            }
-          </ul>
-        </section>
-        <section>
-          <textarea value={this.state.typedMessage} onChange={this.handleTypedMessageChange} ></textarea>
-          <button onClick={this.handleSendClick}>Send</button>
-        </section>
-      </div>
+      <Router>
+        <div>
+          Chat App
+        <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/room/:roomName" component={Chat} />
+          </Switch>
+        </div>
+      </Router>
     )
   }
 }
+
 module.exports = App;

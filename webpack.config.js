@@ -8,9 +8,9 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      loader: 'babel-loader!jsx-loader?harmony'
-    }]
+    rules: [
+      { test: /\.jsx$/, loader: 'jsx-loader' },
+      { test: /\.jsx?$/, loader: 'babel-loader' }
+    ]
   }
 };
