@@ -8,7 +8,13 @@ class App extends React.Component {
       messages: [],
       typedMessage: ""
     }
-    this.ws = new WebSocket("ws://localhost:3000/chat");
+
+    this.handleSendClick = this.handleSendClick.bind(this);
+    this.handleTypedMessageChange = this.handleTypedMessageChange.bind(this);
+  }
+
+  componentDidMount(){
+    this.ws = new WebSocket(`ws://${window.location.host}/chat`);
     this.ws.onmessage = function (evt) {
       const received_msg = evt.data;
       const currentMessages = this.state.messages;
@@ -17,8 +23,6 @@ class App extends React.Component {
         messages: currentMessages
       })
     }.bind(this);
-    this.handleSendClick = this.handleSendClick.bind(this);
-    this.handleTypedMessageChange = this.handleTypedMessageChange.bind(this);
   }
 
   handleTypedMessageChange(e) {
