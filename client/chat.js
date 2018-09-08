@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  Button, FormGroup, FormControl, ButtonToolbar, ToggleButton,
-  ToggleButtonGroup, Glyphicon, InputGroup, Alert, Collapse
+  FormGroup, FormControl, ControlLabel, Glyphicon, InputGroup
 } from 'react-bootstrap';
 
 class Chat extends React.Component {
@@ -45,35 +44,25 @@ class Chat extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          <ul style={{ listStyle: 'none' }}>
-            {
-              this.state.messages.map((m, id) => <li key={id}>{m}</li>)
-            }
-          </ul>
-        </div>
-        <div>
-          <div className="row">
-            <FormGroup>
-              <InputGroup>
-                <FormControl type="text" value={this.state.typedMessage}
-                  onChange={this.handleTypedMessageChange}
-                  onKeyDown={e => {
-                    if (e.which == 13 || e.keyCode == 13) {
-                      this.handleSendClick();
-                    }
-                  }}
-                  placeholder="Type your message...">
-                </FormControl>
-                <InputGroup.Addon onClick={this.handleSendClick} style={{cursor: "pointer"}}><Glyphicon glyph="send" /></InputGroup.Addon>
-              </InputGroup>
-            </FormGroup>
-          </div>
-
-          <div>
-
-          </div>
-        </div>
+        <ul className="list-group">
+          {
+            this.state.messages.map((m, id) => <li className="list-group-item" key={id}>{m}</li>)
+          }
+        </ul>
+        <FormGroup>
+          <InputGroup>
+            <FormControl type="text" value={this.state.typedMessage}
+              onChange={this.handleTypedMessageChange}
+              onKeyDown={e => {
+                if (e.which == 13 || e.keyCode == 13) {
+                  this.handleSendClick();
+                }
+              }}
+              placeholder="Type your message...">
+            </FormControl>
+            <InputGroup.Addon onClick={this.handleSendClick} style={{ cursor: "pointer" }}><Glyphicon glyph="send" /></InputGroup.Addon>
+          </InputGroup>
+        </FormGroup>
       </div>
     )
   }
