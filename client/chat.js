@@ -12,7 +12,7 @@ class Chat extends React.Component {
     this.handleTypedMessageChange = this.handleTypedMessageChange.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const roomName = window.location.pathname.split('/')[2];
     this.ws = new WebSocket(`ws://${window.location.host}/chat/${roomName}`);
     this.ws.onmessage = function (evt) {
@@ -40,18 +40,24 @@ class Chat extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <section>
-          <ul style={{listStyle: 'none'}}>
+      <div>
+        <div className="viewMsg row">
+          <ul style={{ listStyle: 'none' }}>
             {
               this.state.messages.map((m, id) => <li key={id}>{m}</li>)
             }
           </ul>
-        </section>
-        <section>
-          <textarea value={this.state.typedMessage} onChange={this.handleTypedMessageChange} ></textarea>
-          <button onClick={this.handleSendClick}>Send</button>
-        </section>
+        </div>
+        <div className="sendMsg row">
+          <div className="col-sm-10">
+            <input type="text" value={this.state.typedMessage} onChange={this.handleTypedMessageChange} className="myText"></input>
+          </div>
+          <div className="col-sm-2 sendBtn">
+            <a href="#" onClick={this.handleSendClick}>
+              <span className="glyphicon glyphicon-send"></span>
+            </a>
+          </div>
+        </div>
       </div>
     )
   }
