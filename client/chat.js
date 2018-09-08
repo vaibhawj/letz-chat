@@ -1,4 +1,8 @@
 import React from 'react';
+import {
+  Button, FormGroup, FormControl, ButtonToolbar, ToggleButton,
+  ToggleButtonGroup, Glyphicon, InputGroup, Alert, Collapse
+} from 'react-bootstrap';
 
 class Chat extends React.Component {
   constructor() {
@@ -41,21 +45,33 @@ class Chat extends React.Component {
   render() {
     return (
       <div>
-        <div className="viewMsg row">
+        <div>
           <ul style={{ listStyle: 'none' }}>
             {
               this.state.messages.map((m, id) => <li key={id}>{m}</li>)
             }
           </ul>
         </div>
-        <div className="sendMsg row">
-          <div className="col-sm-10">
-            <input type="text" value={this.state.typedMessage} onChange={this.handleTypedMessageChange} className="myText"></input>
+        <div>
+          <div className="row">
+            <FormGroup>
+              <InputGroup>
+                <FormControl type="text" value={this.state.typedMessage}
+                  onChange={this.handleTypedMessageChange}
+                  onKeyDown={e => {
+                    if (e.which == 13 || e.keyCode == 13) {
+                      this.handleSendClick();
+                    }
+                  }}
+                  placeholder="Type your message...">
+                </FormControl>
+                <InputGroup.Addon onClick={this.handleSendClick}><Glyphicon glyph="send" /></InputGroup.Addon>
+              </InputGroup>
+            </FormGroup>
           </div>
-          <div className="col-sm-2 sendBtn">
-            <a href="#" onClick={this.handleSendClick}>
-              <span className="glyphicon glyphicon-send"></span>
-            </a>
+
+          <div>
+
           </div>
         </div>
       </div>
