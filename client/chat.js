@@ -65,7 +65,7 @@ class Chat extends React.Component {
                   }}
                   placeholder="Type your message...">
                 </FormControl>
-                <InputGroup.Addon onClick={this.handleSendClick}><Glyphicon glyph="send" /></InputGroup.Addon>
+                <InputGroup.Addon onClick={this.handleSendClick} style={{cursor: "pointer"}}><Glyphicon glyph="send" /></InputGroup.Addon>
               </InputGroup>
             </FormGroup>
           </div>
