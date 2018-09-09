@@ -2,13 +2,15 @@ import React from 'react';
 import {
   FormGroup, FormControl, Glyphicon, InputGroup
 } from 'react-bootstrap';
+import uuid from 'uuid';
 
 class Chat extends React.Component {
   constructor() {
     super();
     this.state = {
       messages: [],
-      typedMessage: ""
+      typedMessage: "",
+      selfMessageIds: []
     }
 
     this.handleSendClick = this.handleSendClick.bind(this);
@@ -19,9 +21,9 @@ class Chat extends React.Component {
     const roomName = window.location.pathname.split('/')[2];
     this.ws = new WebSocket(`ws://${window.location.host}/chat/${roomName}`);
     this.ws.onmessage = function (evt) {
-      const received_msg = evt.data;
+      const receivedMsg = JSON.parse(evt.data);
       const currentMessages = this.state.messages;
-      currentMessages.push(received_msg);
+      currentMessages.push(receivedMsg);
       this.setState({
         messages: currentMessages
       })
@@ -29,12 +31,12 @@ class Chat extends React.Component {
 
     const setHeight = () => {
       const windowHeight = window.innerHeight;
-      $('.viewMsg').css('min-height', windowHeight-150);
-      $('.viewMsg').css('max-height', windowHeight-150);
+      $('.viewMsg').css('min-height', windowHeight - 150);
+      $('.viewMsg').css('max-height', windowHeight - 150);
     };
 
     setHeight();
-    
+
     window.onresize = () => setHeight();
   }
 
@@ -47,10 +49,14 @@ class Chat extends React.Component {
   handleSendClick() {
     const message = this.state.typedMessage.trim();
     if (!message) return;
-    this.ws.send(message);
+    const id = uuid();
+    this.ws.send(JSON.stringify({ message, id }));
+    const selfMessageIds = this.state.selfMessageIds;
+    selfMessageIds.push(id);
     this.setState({
-      typedMessage: ""
-    })
+      typedMessage: "",
+      selfMessageIds
+    });
   }
 
   render() {
@@ -58,7 +64,10 @@ class Chat extends React.Component {
       <div>
         <ul className="list-group viewMsg">
           {
-            this.state.messages.map((m, id) => <li className="list-group-item" key={id}>{m}</li>)
+            this.state.messages.map((m, id) => {
+              const align = this.state.selfMessageIds.includes(m.id) ? 'left' : 'right';
+              return <li className="list-group-item" style={{ textAlign: `${align}` }} key={id}>{m.message}</li>
+            })
           }
         </ul>
         <div className="sendMsg">
