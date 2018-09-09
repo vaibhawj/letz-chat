@@ -10,9 +10,9 @@ class App extends React.Component {
       <Router>
         <div className="container">
           <h2>Letz chat</h2>
-        <Switch>
-            <Route exact path="/" component={Home} />
+          <Switch>
             <Route exact path="/room/:roomName" component={Chat} />
+            <Route component={Home} />
           </Switch>
         </div>
       </Router>

@@ -4,6 +4,12 @@ import {
 } from 'react-bootstrap';
 import uuid from 'uuid';
 
+const setHeight = () => {
+  const windowHeight = window.innerHeight;
+  $('.viewMsg').css('min-height', windowHeight - 150);
+  $('.viewMsg').css('max-height', windowHeight - 150);
+};
+
 class Chat extends React.Component {
   constructor() {
     super();
@@ -30,14 +36,7 @@ class Chat extends React.Component {
       $('.viewMsg').animate({scrollTop: $('.viewMsg').prop("scrollHeight")});
     }.bind(this);
 
-    const setHeight = () => {
-      const windowHeight = window.innerHeight;
-      $('.viewMsg').css('min-height', windowHeight - 150);
-      $('.viewMsg').css('max-height', windowHeight - 150);
-    };
-
     setHeight();
-
     window.onresize = () => setHeight();
   }
 
