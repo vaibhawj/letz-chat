@@ -8,3 +8,12 @@
 .handCursor {
   cursor: pointer;
 }
+
+.github {
+  text-align: center;
+}
+
+.githubImg {
+  width: 2.5rem;
+  height: auto;
+}

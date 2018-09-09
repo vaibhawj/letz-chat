@@ -14,6 +14,12 @@ class App extends React.Component {
             <Route exact path="/room/:roomName" component={Chat} />
             <Route component={Home} />
           </Switch>
+          <div className="github">
+            <a href="https://github.com/vaibhawj/ws-chat" target="_blank"
+              rel="noopener noreferrer">
+              <img src="/github.png" className="githubImg" alt="github" />
+            </a>
+          </div>
         </div>
       </Router>
     )
