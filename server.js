@@ -17,20 +17,29 @@ const roomClients = {};
 
 // websocket
 app.ws.use(route.all('/chat/:roomName', function (ctx, roomName) {
-  const clients = roomClients[`${roomName}`];
-  if(clients) {
-    clients.push(ctx.websocket);
+  if (roomClients[`${roomName}`]) {
+    roomClients[`${roomName}`].push(ctx.websocket);
   } else {
     roomClients[`${roomName}`] = [ctx.websocket];
   }
 
   ctx.websocket.send(`Welcome to Room ${roomName}!`);
-  
-  ctx.websocket.on('message', function(message) {
+
+  ctx.websocket.on('message', function (message) {
     roomClients[`${roomName}`].forEach(function each(client) {
       client.send(message);
     });
   });
+
+  ctx.websocket.on('close', function (e) {
+    const clients = roomClients[`${roomName}`];
+    for (let i = clients.length - 1; i >= 0; i--) {
+      if (clients[i].readyState === clients[i].CLOSED) {
+        clients.splice(i, 1);
+      }
+    }
+  });
+
 }));
 
 app.use(function* index() {
