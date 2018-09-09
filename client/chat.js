@@ -80,7 +80,8 @@ class Chat extends React.Component {
                     this.handleSendClick();
                   }
                 }}
-                placeholder="Type your message...">
+                placeholder="Type your message..."
+                autoFocus={true}>
               </FormControl>
               <InputGroup.Addon onClick={this.handleSendClick} className="handCursor"><Glyphicon glyph="send" /></InputGroup.Addon>
             </InputGroup>

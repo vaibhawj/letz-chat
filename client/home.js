@@ -41,7 +41,8 @@ class Home extends React.Component {
                   this.handleClick();
                 }
               }}
-              placeholder="Join or create a room">
+              placeholder="Join or create a room"
+              autoFocus={true}>
             </FormControl>
             <InputGroup.Addon onClick={this.handleClick} className="handCursor"><Glyphicon glyph="log-in" /></InputGroup.Addon>
           </InputGroup>
