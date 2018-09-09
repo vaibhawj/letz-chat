@@ -43,7 +43,7 @@ class Home extends React.Component {
               }}
               placeholder="Join or create a room">
             </FormControl>
-            <InputGroup.Addon onClick={this.handleClick} style={{ cursor: "pointer" }}><Glyphicon glyph="log-in" /></InputGroup.Addon>
+            <InputGroup.Addon onClick={this.handleClick} className="handCursor"><Glyphicon glyph="log-in" /></InputGroup.Addon>
           </InputGroup>
         </FormGroup>
       </div>

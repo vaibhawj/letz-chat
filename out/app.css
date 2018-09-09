@@ -1,7 +1,10 @@
-.myText {
-  width: 100%;
+.viewMsg {
+  overflow: scroll;
 }
 
-.sendBtn {
-  padding-left: 0px !important;
+.sendMsg {
+}
+
+.handCursor {
+  cursor: pointer;
 }

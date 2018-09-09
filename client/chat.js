@@ -26,6 +26,16 @@ class Chat extends React.Component {
         messages: currentMessages
       })
     }.bind(this);
+
+    const setHeight = () => {
+      const windowHeight = window.innerHeight;
+      $('.viewMsg').css('min-height', windowHeight-150);
+      $('.viewMsg').css('max-height', windowHeight-150);
+    };
+
+    setHeight();
+    
+    window.onresize = () => setHeight();
   }
 
   handleTypedMessageChange(e) {
@@ -36,7 +46,7 @@ class Chat extends React.Component {
 
   handleSendClick() {
     const message = this.state.typedMessage.trim();
-    if(!message) return;
+    if (!message) return;
     this.ws.send(message);
     this.setState({
       typedMessage: ""
@@ -46,25 +56,27 @@ class Chat extends React.Component {
   render() {
     return (
       <div>
-        <ul className="list-group">
+        <ul className="list-group viewMsg">
           {
             this.state.messages.map((m, id) => <li className="list-group-item" key={id}>{m}</li>)
           }
         </ul>
-        <FormGroup>
-          <InputGroup>
-            <FormControl type="text" value={this.state.typedMessage}
-              onChange={this.handleTypedMessageChange}
-              onKeyDown={e => {
-                if (e.which == 13 || e.keyCode == 13) {
-                  this.handleSendClick();
-                }
-              }}
-              placeholder="Type your message...">
-            </FormControl>
-            <InputGroup.Addon onClick={this.handleSendClick} style={{ cursor: "pointer" }}><Glyphicon glyph="send" /></InputGroup.Addon>
-          </InputGroup>
-        </FormGroup>
+        <div className="sendMsg">
+          <FormGroup>
+            <InputGroup>
+              <FormControl type="text" value={this.state.typedMessage}
+                onChange={this.handleTypedMessageChange}
+                onKeyDown={e => {
+                  if (e.which == 13 || e.keyCode == 13) {
+                    this.handleSendClick();
+                  }
+                }}
+                placeholder="Type your message...">
+              </FormControl>
+              <InputGroup.Addon onClick={this.handleSendClick} className="handCursor"><Glyphicon glyph="send" /></InputGroup.Addon>
+            </InputGroup>
+          </FormGroup>
+        </div>
       </div>
     )
   }
