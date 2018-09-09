@@ -70,7 +70,7 @@ class Chat extends React.Component {
             })
           }
         </ul>
-        <div className="sendMsg">
+        <div>
           <FormGroup>
             <InputGroup>
               <FormControl type="text" value={this.state.typedMessage}
