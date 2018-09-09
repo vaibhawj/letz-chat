@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  FormGroup, FormControl, ControlLabel, Glyphicon, InputGroup
+  FormGroup, FormControl, Glyphicon, InputGroup
 } from 'react-bootstrap';
 
 class Chat extends React.Component {
@@ -35,7 +35,9 @@ class Chat extends React.Component {
   }
 
   handleSendClick() {
-    this.ws.send(this.state.typedMessage);
+    const message = this.state.typedMessage.trim();
+    if(!message) return;
+    this.ws.send(message);
     this.setState({
       typedMessage: ""
     })

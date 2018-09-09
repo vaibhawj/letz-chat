@@ -1,8 +1,11 @@
 import React from 'react';
+import {
+  FormGroup, FormControl, Glyphicon, InputGroup
+} from 'react-bootstrap';
 
 class Home extends React.Component {
 
-  constructor(){
+  constructor() {
     super();
     this.state = {
       room: ""
@@ -11,14 +14,15 @@ class Home extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange(e){
+  handleChange(e) {
     this.setState({
       room: e.target.value
     })
   }
 
-  handleClick(){
-    const room = this.state.room;
+  handleClick() {
+    const room = this.state.room.trim();
+    if(!room) return;
     this.setState({
       room: ""
     });
@@ -28,7 +32,20 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <input type="text" onChange={this.handleChange} value={this.state.room}></input><button onClick={this.handleClick}>Join or create a room</button>
+        <FormGroup>
+          <InputGroup>
+            <FormControl type="text" value={this.state.room}
+              onChange={this.handleChange}
+              onKeyDown={e => {
+                if (e.which == 13 || e.keyCode == 13) {
+                  this.handleClick();
+                }
+              }}
+              placeholder="Join or create a room">
+            </FormControl>
+            <InputGroup.Addon onClick={this.handleClick} style={{ cursor: "pointer" }}><Glyphicon glyph="log-in" /></InputGroup.Addon>
+          </InputGroup>
+        </FormGroup>
       </div>
     )
   }
