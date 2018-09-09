@@ -10,7 +10,7 @@ class Chat extends React.Component {
     this.state = {
       messages: [],
       typedMessage: "",
-      selfMessageIds: []
+      myMessages: []
     }
 
     this.handleSendClick = this.handleSendClick.bind(this);
@@ -26,7 +26,8 @@ class Chat extends React.Component {
       currentMessages.push(receivedMsg);
       this.setState({
         messages: currentMessages
-      })
+      });
+      $('.viewMsg').animate({scrollTop: $('.viewMsg').prop("scrollHeight")});
     }.bind(this);
 
     const setHeight = () => {
@@ -51,7 +52,7 @@ class Chat extends React.Component {
     if (!message) return;
     const id = uuid();
     this.ws.send(JSON.stringify({ message, id }));
-    const selfMessageIds = this.state.selfMessageIds;
+    const selfMessageIds = this.state.myMessages;
     selfMessageIds.push(id);
     this.setState({
       typedMessage: "",
@@ -65,7 +66,7 @@ class Chat extends React.Component {
         <ul className="list-group viewMsg">
           {
             this.state.messages.map((m, id) => {
-              const align = this.state.selfMessageIds.includes(m.id) ? 'left' : 'right';
+              const align = this.state.myMessages.includes(m.id) ? 'left' : 'right';
               return <li className="list-group-item" style={{ textAlign: `${align}` }} key={id}>{m.message}</li>
             })
           }
