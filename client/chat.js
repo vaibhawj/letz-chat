@@ -33,7 +33,7 @@ class Chat extends React.Component {
       this.setState({
         messages: currentMessages
       });
-      $('.viewMsg').animate({scrollTop: $('.viewMsg').prop("scrollHeight")});
+      $('.viewMsg').animate({ scrollTop: $('.viewMsg').prop("scrollHeight") });
     }.bind(this);
 
     setHeight();
@@ -62,11 +62,11 @@ class Chat extends React.Component {
   render() {
     return (
       <div>
-        <ul className="list-group viewMsg">
+        <ul className="viewMsg list-group">
           {
             this.state.messages.map((m, id) => {
               const align = this.state.myMessages.includes(m.id) ? 'left' : 'right';
-              return <li className="list-group-item" style={{ textAlign: `${align}` }} key={id}>{m.message}</li>
+              return <li className="well well-sm" style={{ textAlign: `${align}` }} key={id}>{m.message}</li>
             })
           }
         </ul>
