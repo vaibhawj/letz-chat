@@ -23,7 +23,7 @@ app.ws.use(route.all('/chat/:roomName', function (ctx, roomName) {
     roomClients[`${roomName}`] = [ctx.websocket];
   }
 
-  ctx.websocket.send(`{"message":"Welcome to Room ${roomName}!","id":"00000000000"}`);
+  // ctx.websocket.send(`{"message":"Welcome to Room ${roomName}!","id":"00000000000"}`);
 
   ctx.websocket.on('message', function (message) {
     roomClients[`${roomName}`].forEach(function each(client) {
