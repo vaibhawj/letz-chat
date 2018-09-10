@@ -55,6 +55,7 @@ class Chat extends React.Component {
     const message = this.state.typedMessage.trim();
     if (!message) return;
     const id = uuid();
+    console.log(this.ws.readyState);
     this.ws.send(JSON.stringify({ message, id }));
     const selfMessageIds = this.state.myMessages;
     selfMessageIds.push(id);
