@@ -21,16 +21,23 @@ class Chat extends React.Component {
     this.state = {
       messages: [],
       typedMessage: "",
-      myMessages: []
+      myMessages: [],
+      roomName: ""
     }
 
     this.handleSendClick = this.handleSendClick.bind(this);
     this.handleTypedMessageChange = this.handleTypedMessageChange.bind(this);
+    this.connect = this.connect.bind(this);
+  }
+
+  connect(roomName){
+    return new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName || this.state.roomName}`);
   }
 
   componentDidMount() {
     const roomName = window.location.pathname.split('/')[2];
-    this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}`);
+    this.setState({roomName});
+    this.ws = this.connect(roomName);
     this.ws.onmessage = function (evt) {
       const receivedMsg = JSON.parse(evt.data);
       const currentMessages = this.state.messages;
@@ -55,7 +62,11 @@ class Chat extends React.Component {
     const message = this.state.typedMessage.trim();
     if (!message) return;
     const id = uuid();
-    console.log(this.ws.readyState);
+    if(this.ws.readyState === this.ws.readyState.CLOSED){
+      console.log("before connect", this.ws.readyState);
+      this.ws = this.connect();
+      console.log("after connect", this.ws.readyState);
+    }
     this.ws.send(JSON.stringify({ message, id }));
     const selfMessageIds = this.state.myMessages;
     selfMessageIds.push(id);
