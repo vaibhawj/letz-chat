@@ -10,6 +10,11 @@ const setHeight = () => {
   $('.viewMsg').css('max-height', windowHeight - 150);
 };
 
+const protocol = {
+  'https:': 'wss:',
+  'http:': 'ws:'
+}
+
 class Chat extends React.Component {
   constructor() {
     super();
@@ -25,7 +30,7 @@ class Chat extends React.Component {
 
   componentDidMount() {
     const roomName = window.location.pathname.split('/')[2];
-    this.ws = new WebSocket(`ws://${window.location.host}/chat/${roomName}`);
+    this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}`);
     this.ws.onmessage = function (evt) {
       const receivedMsg = JSON.parse(evt.data);
       const currentMessages = this.state.messages;
