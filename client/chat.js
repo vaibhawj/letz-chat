@@ -30,13 +30,13 @@ class Chat extends React.Component {
     this.connect = this.connect.bind(this);
   }
 
-  connect(roomName){
+  connect(roomName) {
     return new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName || this.state.roomName}`);
   }
 
   componentDidMount() {
     const roomName = window.location.pathname.split('/')[2];
-    this.setState({roomName});
+    this.setState({ roomName });
     this.ws = this.connect(roomName);
     this.ws.onmessage = function (evt) {
       const receivedMsg = JSON.parse(evt.data);
@@ -62,12 +62,16 @@ class Chat extends React.Component {
     const message = this.state.typedMessage.trim();
     if (!message) return;
     const id = uuid();
-    if(this.ws.readyState === this.ws.readyState.CLOSED){
+    if (this.ws.readyState === this.ws.readyState.CLOSED) {
       console.log("before connect", this.ws.readyState);
       this.ws = this.connect();
       console.log("after connect", this.ws.readyState);
     }
-    this.ws.send(JSON.stringify({ message, id }));
+    try {
+      this.ws.send(JSON.stringify({ message, id }));
+    } catch (err) {
+      console.log('error occured', { err })
+    }
     const selfMessageIds = this.state.myMessages;
     selfMessageIds.push(id);
     this.setState({
