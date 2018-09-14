@@ -5,13 +5,18 @@ const staticCache = require('koa-static-cache');
 const send = require('koa-send');
 const path = require('path');
 const websockify = require('koa-websocket');
+const enforceHttps = require('koa-sslify');
 const app = websockify(new Koa());
 
 const assetspath = path.join(__dirname, 'out');
 
 app.use(staticCache(assetspath));
 
-// app.use(auth({ name: 'john', pass: 'doe' }))
+if ('dev' !== process.env.NODE_ENV) {
+  app.use(enforceHttps({
+    trustProtoHeader: true
+  }));
+}
 
 const roomClients = {};
 
