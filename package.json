@@ -12,6 +12,7 @@
     "koa-sslify": "^2.1.2",
     "koa-static-cache": "^5.1.2",
     "koa-websocket": "^5.0.1",
+    "notifyjs": "^3.0.0",
     "path": "^0.12.7",
     "react": "^16.4.2",
     "react-bootstrap": "^0.32.4",

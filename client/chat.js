@@ -3,12 +3,17 @@ import {
   FormGroup, FormControl, Glyphicon, InputGroup
 } from 'react-bootstrap';
 import uuid from 'uuid';
+import Notify from 'notifyjs';
 
 const setHeight = () => {
   const windowHeight = window.innerHeight;
   $('.viewMsg').css('min-height', windowHeight - 150);
   $('.viewMsg').css('max-height', windowHeight - 150);
 };
+
+const onNotifyShow = () => {
+  console.log('notifiction shown')
+}
 
 const protocol = {
   'https:': 'wss:',
@@ -40,6 +45,14 @@ class Chat extends React.Component {
         messages: currentMessages
       });
       $('.viewMsg').animate({ scrollTop: $('.viewMsg').prop("scrollHeight") });
+
+      if (!this.state.myMessages.includes(receivedMsg.id)) {
+        const notification = new Notify(`Room ${roomName}`, {
+          body: receivedMsg.message,
+          notifyShow: onNotifyShow
+        });
+        notification.show();
+      }
     };
 
     this.ws.onclose = (evt) => {
@@ -51,6 +64,10 @@ class Chat extends React.Component {
     this.setupWebSocket();
     setHeight();
     window.onresize = () => setHeight();
+
+    if (Notify.needsPermission && Notify.isSupported()) {
+      Notify.requestPermission();
+    }
   }
 
   handleTypedMessageChange(e) {
