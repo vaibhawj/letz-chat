@@ -1,17 +1,20 @@
 import React from 'react';
 import {
-  FormGroup, FormControl, Glyphicon, InputGroup
+  FormGroup, FormControl, Glyphicon, InputGroup, Label
 } from 'react-bootstrap';
 import uuid from 'uuid';
 import Notify from 'notifyjs';
 
 const setHeight = () => {
   const windowHeight = window.innerHeight;
-  $('.viewMsg').css('min-height', windowHeight - 150);
-  $('.viewMsg').css('max-height', windowHeight - 150);
+  $('.viewMsg').css('min-height', windowHeight - 165);
+  $('.viewMsg').css('max-height', windowHeight - 165);
 };
 
+const audio = new Audio('./notif.mp3');
+
 const onNotifyShow = () => {
+  audio.play();
   console.log('notifiction shown')
 }
 
@@ -26,7 +29,8 @@ class Chat extends React.Component {
     this.state = {
       messages: [],
       typedMessage: "",
-      myMessages: []
+      myMessages: [],
+      population: 0
     }
 
     this.handleSendClick = this.handleSendClick.bind(this);
@@ -39,6 +43,10 @@ class Chat extends React.Component {
     this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}`);
     this.ws.onmessage = (evt) => {
       const receivedMsg = JSON.parse(evt.data);
+      if (receivedMsg.hasOwnProperty('population')) {
+        this.setState({ population: receivedMsg.population })
+        return;
+      }
       const currentMessages = this.state.messages;
       currentMessages.push(receivedMsg);
       this.setState({
@@ -92,6 +100,7 @@ class Chat extends React.Component {
   render() {
     return (
       <div>
+        <p className="population"><i className="fas fa-users"></i> {this.state.population}</p>
         <ul className="viewMsg list-group">
           {
             this.state.messages.map((m, id) => {
