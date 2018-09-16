@@ -11,10 +11,10 @@ const setHeight = () => {
   $('.viewMsg').css('max-height', windowHeight - 165);
 };
 
-const audio = new Audio('./notif.mp3');
+// const audio = new Audio('notif.mp3');
 
 const onNotifyShow = () => {
-  audio.play();
+  // audio.play();
   console.log('notifiction shown')
 }
 
