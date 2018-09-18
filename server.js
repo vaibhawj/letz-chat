@@ -53,10 +53,6 @@ app.ws.use(route.all('/chat/:roomName', function (ctx, roomName) {
     sendPopulationStat();
   });
 
-  setInterval(() => {
-    ctx.websocket && ctx.websocket.send(`{"ping": ${new Date().toTimeString()}}`);
-  }, 1000);
-
 }));
 
 app.use(function* index() {
