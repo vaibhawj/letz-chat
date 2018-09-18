@@ -43,6 +43,9 @@ class Chat extends React.Component {
     this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}`);
     this.ws.onmessage = (evt) => {
       const receivedMsg = JSON.parse(evt.data);
+      if(receivedMsg.hasOwnProperty('ping')) {
+        return;
+      }
       if (receivedMsg.hasOwnProperty('population')) {
         this.setState({ population: receivedMsg.population })
         return;
@@ -130,4 +133,4 @@ class Chat extends React.Component {
     )
   }
 }
-module.exports = Chat;
+export default Chat;
