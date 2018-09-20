@@ -24,7 +24,7 @@ const roomClients = {};
 app.ws.use(route.all('/chat/:roomName', function (ctx, roomName) {
   const sendPopulationStat = () => {
     roomClients[`${roomName}`].forEach(function each(client) {
-      client.send(`{"population":${roomClients[`${roomName}`].length}}`);
+      client.readyState === client.OPEN && client.send(`{"population":${roomClients[`${roomName}`].length}}`);
     });
   }
   if (roomClients[`${roomName}`]) {
@@ -39,7 +39,7 @@ app.ws.use(route.all('/chat/:roomName', function (ctx, roomName) {
 
   ctx.websocket.on('message', function (message) {
     roomClients[`${roomName}`].forEach(function each(client) {
-      client.send(message);
+      client.readyState === client.OPEN && client.send(message);
     });
   });
 
