@@ -9,3 +9,9 @@
 .population {
   text-align: right;
 }
+
+.msg {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+}

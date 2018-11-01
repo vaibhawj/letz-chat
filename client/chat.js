@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  FormGroup, FormControl, Glyphicon, InputGroup, Label
+  FormGroup, FormControl, Glyphicon, InputGroup
 } from 'react-bootstrap';
 import uuid from 'uuid';
 import Notify from 'notifyjs';
 
 const setHeight = () => {
   const windowHeight = window.innerHeight;
-  $('.viewMsg').css('min-height', windowHeight - 165);
-  $('.viewMsg').css('max-height', windowHeight - 165);
+  $('.viewMsg').css('min-height', windowHeight - 180);
+  $('.viewMsg').css('max-height', windowHeight - 180);
 };
 
 // const audio = new Audio('notif.mp3');
@@ -43,7 +43,7 @@ class Chat extends React.Component {
     this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}`);
     this.ws.onmessage = (evt) => {
       const receivedMsg = JSON.parse(evt.data);
-      if(receivedMsg.hasOwnProperty('ping')) {
+      if (receivedMsg.hasOwnProperty('ping')) {
         return;
       }
       if (receivedMsg.hasOwnProperty('population')) {
@@ -82,8 +82,9 @@ class Chat extends React.Component {
   }
 
   handleTypedMessageChange(e) {
+    const value = e.target.value === "\n" ? "" : e.target.value
     this.setState({
-      typedMessage: e.target.value
+      typedMessage: value
     })
   }
 
@@ -107,8 +108,8 @@ class Chat extends React.Component {
         <ul className="viewMsg list-group">
           {
             this.state.messages.map((m, id) => {
-              const align = this.state.myMessages.includes(m.id) ? 'left' : 'right';
-              return <li className="well well-sm" style={{ textAlign: `${align}` }} key={id}>{m.message}</li>
+              const sender = this.state.myMessages.includes(m.id) ? 'Me' : 'Someone';
+              return <pre className="msg" key={id}>{sender}: <li className="well well-sm">{m.message}</li></pre>
             })
           }
         </ul>
@@ -116,10 +117,13 @@ class Chat extends React.Component {
           <FormGroup>
             <InputGroup>
               <FormControl type="text" value={this.state.typedMessage}
+                componentClass="textarea"
                 onChange={this.handleTypedMessageChange}
                 onKeyDown={e => {
                   if (e.which == 13 || e.keyCode == 13) {
-                    this.handleSendClick();
+                    if (this.state.typedMessage.trim() && !e.shiftKey) {
+                      this.handleSendClick();
+                    }
                   }
                 }}
                 placeholder="Type your message..."
