@@ -109,7 +109,7 @@ class Chat extends React.Component {
           {
             this.state.messages.map((m, id) => {
               const sender = this.state.myMessages.includes(m.id) ? 'Me' : 'Someone';
-              return <pre className="msg" key={id}>{sender}: <li className="well well-sm">{m.message}</li></pre>
+              return <span key={id}>{sender}: <pre className="msg"><li className="well well-sm">{m.message}</li></pre></span>
             })
           }
         </ul>
