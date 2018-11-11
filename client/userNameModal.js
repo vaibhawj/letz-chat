@@ -26,7 +26,8 @@ class UserNameModal extends React.Component {
     const uname = this.state.uname.trim();
     if (!uname) return;
 
-    this.props.cookies.set('uname', uname);
+    var expires = new Date(Date.now() + 86400000);
+    this.props.cookies.set('uname', uname, {expires});
   }
 
   render() {
@@ -46,7 +47,7 @@ class UserNameModal extends React.Component {
                     this.handleClick();
                   }
                 }}
-                placeholder="Enter your name.."
+                placeholder="Name?"
                 autoFocus={true}>
               </FormControl>
               <InputGroup.Addon onClick={this.handleClick} className="handCursor"><Glyphicon glyph="log-in" /></InputGroup.Addon>
