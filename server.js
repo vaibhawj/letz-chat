@@ -6,10 +6,10 @@ const send = require('koa-send');
 const path = require('path');
 const websockify = require('koa-websocket');
 const enforceHttps = require('koa-sslify');
-const app = websockify(new Koa());
+
+const app = websockify(new Koa);
 
 const assetspath = path.join(__dirname, 'out');
-
 app.use(staticCache(assetspath));
 
 if ('dev' !== process.env.NODE_ENV) {
@@ -39,7 +39,7 @@ app.ws.use(route.all('/chat/:roomName', function (ctx, roomName) {
 
   ctx.websocket.on('message', function (message) {
     roomClients[`${roomName}`].forEach(function each(client) {
-      client.readyState === client.OPEN && client.send(message);
+      client.readyState === client.OPEN && client.send(JSON.stringify(message));
     });
   });
 
