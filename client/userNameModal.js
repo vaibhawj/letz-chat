@@ -26,6 +26,17 @@ class UserNameModal extends React.Component {
     const uname = this.state.uname.trim();
     if (!uname) return;
 
+    this.setUserNameInCookie(uname);
+  }
+
+  componentDidMount(){
+    const uname = this.props.cookies.get('uname');
+    if(uname){
+      this.setUserNameInCookie(uname);
+    }
+  }
+
+  setUserNameInCookie(uname){
     var expires = new Date(Date.now() + 86400000);
     this.props.cookies.set('uname', uname, {expires});
   }
