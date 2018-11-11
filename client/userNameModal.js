@@ -48,7 +48,7 @@ class UserNameModal extends React.Component {
         modal
         closeOnDocumentClick
       >
-        <div>
+        <div className="userName">
           <FormGroup>
             <InputGroup>
               <FormControl type="text" value={this.state.uname}

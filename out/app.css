@@ -17,3 +17,7 @@
   padding: 0;
   margin-bottom: 0;
 }
+
+.userName > .form-group {
+  margin-bottom: 0;
+}
