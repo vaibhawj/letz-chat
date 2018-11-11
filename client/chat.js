@@ -38,11 +38,10 @@ class Chat extends React.Component {
   }
 
   setupWebSocket() {
-    const uname = this.props.cookies.get('uname')?this.props.cookies.get('uname'):'Anon';
     const roomName = window.location.pathname.split('/')[2];
-    this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}?uname=${uname}`);
+    this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}`);
     this.ws.onmessage = (evt) => {
-      const receivedMsg = JSON.parse(evt.data);
+      var receivedMsg = JSON.parse(evt.data);
       if (receivedMsg.hasOwnProperty('ping')) {
         return;
       }
@@ -51,6 +50,7 @@ class Chat extends React.Component {
         return;
       }
       const currentMessages = this.state.messages;
+      receivedMsg = JSON.parse(receivedMsg)
       currentMessages.push(receivedMsg);
       this.setState({
         messages: currentMessages
@@ -91,7 +91,8 @@ class Chat extends React.Component {
   handleSendClick() {
     const message = this.state.typedMessage.trim();
     if (!message) return;
-    this.ws.send(JSON.stringify({ message }));
+    const sender = this.props.cookies.get('uname') ? this.props.cookies.get('uname') : 'Anon'; 
+    this.ws.send(JSON.stringify({ message, sender }));
     this.setState({
       typedMessage: ""
     });

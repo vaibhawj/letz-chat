@@ -38,10 +38,8 @@ app.ws.use(route.all('/chat/:roomName', function (ctx, roomName) {
   sendPopulationStat();
 
   ctx.websocket.on('message', function (message) {
-    const msgJson = JSON.parse(message);
-    msgJson.sender = ctx.request.query.uname
     roomClients[`${roomName}`].forEach(function each(client) {
-      client.readyState === client.OPEN && client.send(JSON.stringify(msgJson));
+      client.readyState === client.OPEN && client.send(JSON.stringify(message));
     });
   });
 
