@@ -2,8 +2,8 @@ import React from 'react';
 import {
   FormGroup, FormControl, Glyphicon, InputGroup
 } from 'react-bootstrap';
-import uuid from 'uuid';
 import Notify from 'notifyjs';
+import { withCookies } from 'react-cookie';
 
 const setHeight = () => {
   const windowHeight = window.innerHeight;
@@ -29,7 +29,6 @@ class Chat extends React.Component {
     this.state = {
       messages: [],
       typedMessage: "",
-      myMessages: [],
       population: 0
     }
 
@@ -39,8 +38,9 @@ class Chat extends React.Component {
   }
 
   setupWebSocket() {
+    const uname = this.props.cookies.get('uname')?this.props.cookies.get('uname'):'Anon';
     const roomName = window.location.pathname.split('/')[2];
-    this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}`);
+    this.ws = new WebSocket(`${protocol[window.location.protocol]}//${window.location.host}/chat/${roomName}?uname=${uname}`);
     this.ws.onmessage = (evt) => {
       const receivedMsg = JSON.parse(evt.data);
       if (receivedMsg.hasOwnProperty('ping')) {
@@ -57,7 +57,7 @@ class Chat extends React.Component {
       });
       $('.viewMsg').animate({ scrollTop: $('.viewMsg').prop("scrollHeight") });
 
-      if (!this.state.myMessages.includes(receivedMsg.id)) {
+      if (this.props.cookies.get('uname') !== receivedMsg.sender) {
         const notification = new Notify(`Room ${roomName}`, {
           body: receivedMsg.message,
           notifyShow: onNotifyShow
@@ -91,13 +91,9 @@ class Chat extends React.Component {
   handleSendClick() {
     const message = this.state.typedMessage.trim();
     if (!message) return;
-    const id = uuid();
-    this.ws.send(JSON.stringify({ message, id }));
-    const selfMessageIds = this.state.myMessages;
-    selfMessageIds.push(id);
+    this.ws.send(JSON.stringify({ message }));
     this.setState({
-      typedMessage: "",
-      selfMessageIds
+      typedMessage: ""
     });
   }
 
@@ -108,8 +104,7 @@ class Chat extends React.Component {
         <ul className="viewMsg list-group">
           {
             this.state.messages.map((m, id) => {
-              const sender = this.state.myMessages.includes(m.id) ? 'Me' : 'Someone';
-              return <span key={id}>{sender}: <pre className="msg"><li className="well well-sm">{m.message}</li></pre></span>
+              return <span key={id}>{m.sender}: <pre className="msg"><li className="well well-sm">{m.message}</li></pre></span>
             })
           }
         </ul>
@@ -137,4 +132,4 @@ class Chat extends React.Component {
     )
   }
 }
-export default Chat;
+export default withCookies(Chat);
