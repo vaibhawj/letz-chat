@@ -34,9 +34,9 @@
   },
   "scripts": {
     "build": "webpack -p --mode=production --config webpack.config.js",
-    "build:dev": "webpack --mode=development --config webpack.config.js",
+    "build:dev": "webpack --mode=development --config webpack.config.js --watch",
     "postinstall": "yarn build",
     "start": "node server.js",
-    "start:dev": "yarn build:dev && NODE_ENV=dev node server.js"
+    "start:dev": "yarn build:dev | NODE_ENV=dev node server.js"
   }
 }
