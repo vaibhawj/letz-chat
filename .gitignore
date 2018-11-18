@@ -1,4 +1,4 @@
 node_modules/
 yarn-error.log
-out/bundle.js
+public/bundle.js
 .DS_Store
