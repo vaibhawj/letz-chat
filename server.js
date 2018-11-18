@@ -9,7 +9,7 @@ const enforceHttps = require('koa-sslify');
 
 const app = websockify(new Koa);
 
-const assetspath = path.join(__dirname, 'out');
+const assetspath = path.join(__dirname, 'public');
 app.use(staticCache(assetspath));
 
 if ('dev' !== process.env.NODE_ENV) {
